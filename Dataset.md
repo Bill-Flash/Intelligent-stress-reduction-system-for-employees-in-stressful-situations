@@ -1,31 +1,30 @@
-1. FER - 2013(快乐、中性、悲伤、愤怒、惊讶、厌恶、恐惧35,685 个 48x48 像素灰度图像)
+1. FER-2013 (35685 48x48 pixel grayscale images of happiness, neutrality, sadness, anger, surprise, disgust, and fear)
 https://www.kaggle.com/datasets/ananthu017/emotion-detection-fer
 https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data
-具体做法可以参考这个知乎：
+The specific method can refer to this Zhihu:
 https://www.zhihu.com/question/417644001/answer/3445136257
 
-2. AffectNet是一个大型面部数据库，其中包含带有“影响”（面部表情的心理学术语）标记的面部。为了适应常见的内存限制，分辨率降低至 96x96
-AffectNet数据集的优点：
-分类标注：大约有450,000张图像被手工标注了八种基本情绪（快乐、悲伤、惊讶、恐惧、厌恶、愤怒、轻蔑、中性）。连续标注：部分图像还被标注了情感维度，包括价值（Valence）和激活度（Arousal）。
+2. AffectNet is a large facial database that contains faces marked with "influence" (a psychological term for facial expressions). To adapt to common memory limitations, the resolution has been reduced to 96x96
+Advantages of AffectNet dataset:
+Classification annotation: Approximately 450000 images were manually annotated with eight basic emotions (happiness, sadness, surprise, fear, disgust, anger, contempt, neutral). Continuous annotation: Some images are also annotated with emotional dimensions, including Valence and Arousal.
 http://mohammadmahoor.com/affectnet/
 https://www.kaggle.com/datasets/noamsegal/affectnet-training-data
 
-3. KDEF 由瑞典卡罗林斯卡研究所创建的一个面部表情库。该数据集包含了从不同角度拍摄的70位模特（男女各半）展示六种基本情绪（快乐、悲伤、愤怒、恐惧、惊讶和厌恶）以及一个中性表情的图像。
-KDEF数据集的优点：
-多角度拍摄：每个模特的表情都从五个不同的角度（正面、半侧面、侧面、斜上和斜下）进行拍摄，增加了数据的多样性。
-高分辨率：所有图片都以高分辨率格式提供，适合进行详细的图像分析。
-丰富的表情：包括所有基本情绪的表情，适用于进行复杂的情绪分析研究。
-标准化的环境：所有照片都在标准化的光照和背景条件下拍摄，确保数据的一致性。
+3. KDEF is a facial expression library created by the Karolinska Institute in Sweden. This dataset contains images of 70 models (half male and half female) captured from different angles displaying six basic emotions (happiness, sadness, anger, fear, surprise, and disgust) and a neutral expression.
+Advantages of the KDEF dataset:
+Multi-angle shooting: Each model's expression is shot from five different angles (front, half side, side, diagonal up and diagonal down), increasing the diversity of data.
+High resolution: All images are provided in a high-resolution format, suitable for detailed image analysis.
+Rich expressions: including expressions of all basic emotions, suitable for conducting complex emotional analysis research.
+Standardized environment: All photos are taken under standardized lighting and background conditions to ensure data consistency.
 https://www.kaggle.com/datasets/muhammadnafian/kdef-dataset
 
-4. The Japanese Female Facial Expression (JAFFE) Dataset 日本女性面部表情数据集，包含了213张由10名日本女性演员表演的7种基本面部表情（愤怒、厌恶、恐惧、快乐、悲伤、惊讶和中性）的灰度图像。每种表情都有3个不同的程度。此数据集较小，但具有较高的标注准确率。（我觉得因为日本人比较符合我们亚洲人长相，可能对于我们的实际匹配更精确）暂时还未申请下载数据集，使用时需要下载。https://paperswithcode.com/dataset/jaffe
-The Japanese Female Facial Expression (JAFFE) Dataset (zenodo.org)
-5. 扩展 Cohn-Kanade （CK+） 数据集包含来自 123 个不同主题的 593 个视频序列，年龄从 18 岁到 50 岁不等，具有不同的性别和传统。每个视频都显示了从中性表情到目标峰值表情的面部转变，以每秒 30 帧 （FPS） 录制，分辨率为 640x490 或 640x480 像素。在这些视频中，有 327 个被标记为七种表情类别之一：愤怒、蔑视、厌恶、恐惧、快乐、悲伤和惊讶。
+5. The Japanese Female Facial Expression (JAFFE) Dataset contains 213 grayscale images of 7 basic facial expressions (anger, disgust, fear, happiness, sadness, surprise, and neutrality) performed by 10 Japanese female actors. Each expression has three different degrees. This dataset is small but has high annotation accuracy. (I think because Japanese people are more in line with our Asian appearance, it may be more accurate for our actual matching) We have not yet applied to download the dataset, so we need to download it when using it. https://paperswithcode.com/dataset/jaffe
+The Japanese Female Facial Expression (JAFFE) Dataset (zenodo. org)
+6. Expand the Cohn Kanade (CK+) dataset to include 593 video sequences from 123 different themes, ranging in age from 18 to 50 years old, with different genders and traditions. Each video displays a facial transition from a neutral expression to a target peak expression, recorded at 30 frames per second (FPS) with a resolution of 640x490 or 640x480 pixels. In these videos, 327 were marked as one of the seven categories of facial expressions: anger, contempt, disgust, fear, happiness, sadness, and surprise.
 https://paperswithcode.com/dataset/ck
 
-
-6.MMI 面部表情数据库包含 2900 多个视频和 75 个主题的高分辨率静态图像。它针对视频中 AU 的存在进行了完全注释（事件编码），并在帧级别上进行了部分编码，指示每个帧的 AU 是否处于中性、起始、顶点或偏移阶段。一小部分被注释为视听笑声。（若后面需要用到视频作为数据集可以用这个，或者将视频截成每一帧作为图片数据集）
+6. The MMI facial expression database contains over 2900 videos and high-resolution static images of 75 themes. It fully annotates the presence of AU in the video (event encoding) and partially encodes it at the frame level, indicating whether the AU in each frame is in the neutral, starting, vertex, or offset stage. A small portion is annotated as audio-visual laughter. (If you need to use video as the dataset later, you can use this, or cut the video into each frame as the image dataset.)
 https://paperswithcode.com/dataset/mmi
 
-所有数据集下载链接：
+All dataset download links:
 https://drive.google.com/drive/folders/1u0zcRj6s9iZBVyrcE3zlzgarrjPZveBi?usp=sharing
