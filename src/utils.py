@@ -172,14 +172,14 @@ def index2emotion(index=0, kind='cn'):
     :return:
     """
     emotions = {
-        '发怒': 'anger',
-        '厌恶': 'disgust',
-        '恐惧': 'fear',
-        '开心': 'happy',
-        '伤心': 'sad',
-        '惊讶': 'surprised',
-        '中性': 'neutral',
-        '蔑视': 'contempt'
+        'anger': 'anger',
+        'disgust': 'disgust',
+        'fear': 'fear',
+        'happy': 'happy',
+        'sad': 'sad',
+        'surprised': 'surprised',
+        'neutral': 'neutral',
+        'contempt': 'contempt'
 
     }
     if kind == 'cn':
@@ -206,7 +206,7 @@ def cv2_img_add_text(img, text, left, top, text_color=(0, 255, 0), text_size=20)
         img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(img)
     font_text = ImageFont.truetype(
-        "./assets/simsun.ttc", text_size, encoding="utf-8")  # 使用宋体
+        "/Users/fangzhihao/Desktop/港大学习/sem2/project/FacialExpressionRecognition-master/assets/simsun.ttc", text_size, encoding="utf-8")
     draw.text((left, top), text, text_color, font=font_text)
     return cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
 
