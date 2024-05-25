@@ -1,9 +1,3 @@
-"""
-author: Zhou Chen
-datetime: 2019/7/1 16:54
-desc: 利用Gabor滤波尝试实现
-"""
-
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -58,13 +52,11 @@ class Classifier(object):
         # 测试样本的数目
         test_n = test_array.shape[0]
 
-        # 提取训练样本和测试样本的特征量和真实结果
         train_x = train_array[:, :m - 1].reshape(n, m - 1)
         train_y = train_array[:, m - 1].reshape(n, )
         test_x = test_array[:, :m - 1].reshape(test_n, m - 1)
         test_y = test_array[:, m - 1].reshape(test_n, )
 
-        # 将特征量归一化
         for i in range(m - 1):
             train_array_max.append(np.max(train_x[:, i]))
             train_array_min.append(np.min(train_x[:, i]))
@@ -72,7 +64,6 @@ class Classifier(object):
                 train_x[:, i] = (train_x[:, i] - train_array_min[i]) / (train_array_max[i] - train_array_min[i])
                 test_x[:, i] = (test_x[:, i] - train_array_min[i]) / (train_array_max[i] - train_array_min[i])
 
-        # 利用最邻近算法进行预测训练数据结果
         result = []
         for x1 in test_x:
             distance = []
@@ -80,7 +71,6 @@ class Classifier(object):
                 distance.append(np.sum((x1 - x2) * (x1 - x2)))
             result.append(train_y[distance.index(min(distance))])
 
-        # 获得识别率
         recognition_rate = np.sum((result == test_y)) / len(test_y)
         return recognition_rate, np.array(result).astype('int')
 
@@ -106,7 +96,6 @@ class Classifier(object):
         svc.fit(new_train, y_train)
         pred = svc.predict(new_test)
 
-        # 获得识别率
         recognition_rate = np.sum((pred == y_test)) / len(test_data[:, -1])
         print(recognition_rate)
 
@@ -128,7 +117,6 @@ class Classifier(object):
         mlp.fit(x_train, y_train)
         pred = mlp.predict(x_test)
 
-        # 获得识别率
         recognition_rate = np.sum((pred == y_test)) / len(test_data[:, -1])
         print(recognition_rate)
 
@@ -137,7 +125,7 @@ class Gabor(object):
 
     def build_filters(self):
         """
-        构建Gabor滤波器
+        construct Gabor filter
         :return:
         """
         filters = []
@@ -158,7 +146,7 @@ class Gabor(object):
         return accum
 
     def getGabor(self, img, filters, pic_show=False, reduction=1):
-        res = []  # 滤波结果
+        res = []
         for i in range(len(filters)):
             res1 = self.process(img, filters[i])
             res1 = Decomposition().mean_pooling(res1, reduction)
@@ -171,7 +159,7 @@ class Gabor(object):
                 plt.imshow(filters[temp], cmap='gray')
             plt.show()
 
-        return res  # 返回滤波结果,结果为24幅图，按照gabor角度排列
+        return res
 
 
 def generate_train(path, result, filters, train):
@@ -185,12 +173,6 @@ def generate_train(path, result, filters, train):
 
 
 def evaluate_valid(data_op=1, op=1, reduction=1, rate=0.2):
-    """
-    评估函数，在三个数据集上进行评估
-    :param op: 1-all 2-part
-    :param data_op: 1-CK 2-Fer 3-Jaffe
-    :return:
-    """
     import preprocess
     from tqdm import tqdm
     from data import CK, Fer2013, Jaffe
@@ -214,7 +196,6 @@ def evaluate_valid(data_op=1, op=1, reduction=1, rate=0.2):
         train = np.array(train)
 
     if data_op != 2:
-        # 需要划分
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(train, train, random_state=2019, test_size=rate)
         Classifier().SVM(x_train, x_test)
@@ -247,10 +228,6 @@ def evaluate_valid(data_op=1, op=1, reduction=1, rate=0.2):
 
 
 def evaluate_test():
-    """
-    在未训练的数据集上进行测试
-    :return:
-    """
     filters = Gabor().build_filters()
     from tqdm import tqdm
     from data import CK, Fer2013, Jaffe
@@ -292,7 +269,6 @@ def evaluate_test():
 
 
 if __name__ == '__main__':
-    # 在本数据集上训练并评估
     # 0.9645 0.949 (784, 36865) (197, 36865) re = 6
     print("CK+:")
     evaluate_valid(1, 1, 3)
@@ -302,6 +278,5 @@ if __name__ == '__main__':
     # # 0.4186 0.697
     # print("Jaffe")
     # evaluate_valid(3, 2, 1, 0.1)
-    # # 在不同数据集上训练并评估
     # # Jaffe 0.705 CK: 0.705
     # evaluate_test()

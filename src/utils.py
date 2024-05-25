@@ -1,42 +1,36 @@
-"""
-author: Zhou Chen
-datetime: 2019/6/18 17:39
-desc: 一些工具库
-"""
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 
 def get_fer2013_images():
     """
-    从csv文件得到图片集
     :return:
     """
     import pandas as pd
     import numpy as np
     import scipy.misc as sm
     import os
-    # 定义7种表情
+
     emotions = {
-        '0': 'anger',  # 生气
-        '1': 'disgust',  # 厌恶
-        '2': 'fear',  # 恐惧
-        '3': 'happy',  # 开心
-        '4': 'sad',  # 伤心
-        '5': 'surprised',  # 惊讶
-        '6': 'neutral',  # 中性
+        '0': 'anger',
+        '1': 'disgust',
+        '2': 'fear',
+        '3': 'happy',
+        '4': 'sad',
+        '5': 'surprised',
+        '6': 'neutral',
     }
 
     def save_image_from_fer2013(file):
         faces_data = pd.read_csv(file)
         root = '../data/fer2013/'
-        # 文件主要三个属性，emotion为表情列，pixels为像素数据列，usage为数据集所属列
+
         data_number = 0
         for index in range(len(faces_data)):
-            # 解析每一行csv文件内容
+
             emotion_data = faces_data.loc[index][0]  # emotion
             image_data = faces_data.loc[index][1]  # pixels
             usage_data = faces_data.loc[index][2]  # usage
-            # 将图片数据转换成48*48
+
             image_array = np.array(list(map(float, image_data.split()))).reshape((48, 48))
 
             folder = root + usage_data
@@ -46,18 +40,17 @@ def get_fer2013_images():
                 os.mkdir(folder)
             if not os.path.exists(image_path):
                 os.mkdir(image_path)
-            # 图片文件名
+
             image_file = os.path.join(image_path, str(index) + '.jpg')
             sm.toimage(image_array).save(image_file)
             data_number += 1
-        print('总共有' + str(data_number) + '张图片')
+        print('There are' + str(data_number) + 'pictures in total')
 
     save_image_from_fer2013('../data/fer2013/fer2013.csv')
 
 
 def get_jaffe_images():
     """
-    得到按照标签存放的目录结构的数据集同时对人脸进行检测
     :return:
     """
     import cv2
@@ -75,7 +68,6 @@ def get_jaffe_images():
 
     def detect_face(img):
         """
-        检测人脸并裁减
         :param img:
         :return:
         """
@@ -83,7 +75,7 @@ def get_jaffe_images():
         rects = cascade.detectMultiScale(img, scaleFactor=1.3, minNeighbors=4, minSize=(30, 30),
                                          flags=cv2.CASCADE_SCALE_IMAGE)
         if len(rects) == 0:
-            # 没有检测到人脸
+
             return []
         rects[:, 2:] += rects[:, :2]
         return rects
@@ -94,13 +86,12 @@ def get_jaffe_images():
     labels = []
     index = 0
     for file in files:
-        img_path = os.path.join(folder, file)  # 文件路径
-        img_label = emotions[str(img_path.split('.')[-3][:2])]  # 文件名包含标签
+        img_path = os.path.join(folder, file)
+        img_label = emotions[str(img_path.split('.')[-3][:2])]
         labels.append(img_label)
         img = cv2.imread(img_path, 1)
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        # 下面裁减
         rects_ = detect_face(img_gray)
         for x1, y1, x2, y2 in rects_:
             cv2.rectangle(img, (x1+10, y1+20), (x2-10, y2), (0, 255, 255), 2)
@@ -108,7 +99,6 @@ def get_jaffe_images():
             img_roi = cv2.resize(img_roi, (48, 48))
             images.append(img_roi)
 
-        # 若不裁减，即原数据集
         # icons.append(cv2.resize(img_gray, (48, 48)))
 
         index += 1
@@ -124,7 +114,6 @@ def get_jaffe_images():
 
 def expression_analysis(distribution_possibility):
     """
-    根据概率分布显示直方图
     :param distribution_possibility:
     :return:
     """
@@ -156,7 +145,6 @@ def expression_analysis(distribution_possibility):
 
 def load_test_image(path):
     """
-    读取外部测试图片
     :param path:
     :return:
     """
@@ -167,7 +155,6 @@ def load_test_image(path):
 
 def index2emotion(index=0, kind='cn'):
     """
-    根据表情下标返回表情字符串
     :param index:
     :return:
     """
@@ -213,7 +200,6 @@ def cv2_img_add_text(img, text, left, top, text_color=(0, 255, 0), text_size=20)
 
 def get_faces_from_gray_image(img_path):
     """
-    获取图片中的人脸
     :param img_path:
     :return:
     """
@@ -230,7 +216,6 @@ def get_faces_from_gray_image(img_path):
     )
     if len(faces) == 0:
         return None
-    # 遍历每一个脸
     faces_gray = []
     for (x, y, w, h) in faces:
         face_img_gray = img_gray[y:y + h + 10, x:x + w + 10]
@@ -241,7 +226,7 @@ def get_faces_from_gray_image(img_path):
 
 def get_feature_map(model, layer_index, channels, input_img=None):
     """
-    可视化每个卷积层学到的特征图
+    Visualize the feature maps learned by each convolutional layer
     :param model:
     :param layer_index:
     :param channels:

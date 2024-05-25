@@ -1,8 +1,3 @@
-"""
-author: Zhou Chen
-datetime: 2019/7/1 17:10
-desc: 用于图片预处理，神经网络没有用到这部分
-"""
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
@@ -11,7 +6,7 @@ import cv2 as cv
 
 def add_noise(input_data):
     """
-    增加噪声干扰
+    Increase noise interference
     :param input_data:
     :return:
     """
@@ -24,7 +19,6 @@ def add_noise(input_data):
 
 def histogram_equalization(img):
     """
-    直方图均衡化
     :param img:
     :return:
     """
@@ -38,7 +32,6 @@ def histogram_equalization(img):
 
 def adaptive_histogram_equalization(img):
     """
-    自适应直方图均衡化
     :param img:
     :return:
     """
@@ -54,15 +47,14 @@ def adaptive_histogram_equalization(img):
 
 def detection(img):
     """
-    人脸检测
     :param img:
     :return:
     """
     detector = dlib.get_frontal_face_detector()
-    dets = detector(img, 1)  # 使用detector进行人脸检测 dets为返回的结果
-    print("Number of faces detected: {}".format(len(dets)))  # 打印识别到的人脸个数
+    dets = detector(img, 1)  # Use detector for face detection, dets is the returned result
+    print("Number of faces detected: {}".format(len(dets)))  # Print the number of recognized faces
     for index, face in enumerate(dets):
-        # 在图片中标注人脸，并显示
+        # Label faces in pictures and display
         left = face.left()
         top = face.top()
         right = face.right()
@@ -73,18 +65,16 @@ def detection(img):
 
 def predictor(img, dets):
     """
-    特征点标定
     :param img:
     :param dets:
     :return:
     """
-    # shape_predictor_68_face_landmarks.dat是进行人脸标定的模型，它是基于HOG特征的，这里是他所在的路径
+    # shape_predictor_68_face_landmarks.dat is a model for face calibration, it is based on HOG features.
     predictor_path = "../model/shape_predictor_68_face_landmarks.dat"
     predictor = dlib.shape_predictor(predictor_path)
     shape_list = []
     for index, face in enumerate(dets):
-        shape = predictor(img, face)  # 寻找人脸的68个标定点
-        # 遍历所有点，打印出其坐标，并用绿色的圈表示出来
+        shape = predictor(img, face)
         for _, pt in enumerate(shape.parts()):
             pt_pos = (pt.x, pt.y)
             cv.circle(img, pt_pos, 1, (0, 255, 0), 1)
@@ -111,16 +101,13 @@ def gray_norm(img):
 
 def normailiztaion(img, dets, shape_list):
     """
-    图像尺度灰度归一化
     :param img:
     :param dets:
     :param shape_list:
     :return:
     """
-    # 灰度归一化
     img = gray_norm(img)
 
-    # 尺度归一化
     img_list = []
     pt_pos_list = []
     for index, face in enumerate(dets):
@@ -142,26 +129,20 @@ def normailiztaion(img, dets, shape_list):
     return img_list, pt_pos_list
 
 
-# 图片预处理
 def deal(img):
     """
     :param img:
     :return:
-    img  原图框定后的图片
-    dets 人脸框定信息
-    shape 特征点在原图的位置
-    img_list 框取的图片
-    pt_pos_list 每张图片特征点的位置
+    img: The image after being cropped
+    dets: Face bounding information
+    shape: The positions of feature points in the original image
+    img_list: The cropped images
+    pt_pos_list: The positions of feature points in each image
     """
-    # 滤波去噪
     img = cv.blur(img, (5, 5))
-    # 人脸框定
     dets = detection(img)
-    # 特征点标定
     shape_list = predictor(img, dets)
-    # 直方图均衡化
     adaptive_histogram_equalization(img)
-    # 尺度灰度归一化
     img_list, pt_pos_list = normailiztaion(img, dets, shape_list)
     return img, dets, shape_list, img_list, pt_pos_list
 
@@ -175,43 +156,36 @@ def test():
     plt.suptitle('preprocess')
     plt.subplots_adjust(wspace=0.3, hspace=0.3)
 
-    # 原图
     plt.subplot(321)
     plt.imshow(lena)
     plt.title('origin_image')
     plt.axis('off')
 
-    # 添加噪声后的图片
     noise_image = add_noise(lena)
     plt.subplot(322)
     plt.imshow(noise_image)
     plt.title('noise_image')
     plt.axis('off')
 
-    # 均值滤波后的图片
     blur_image = cv.blur(noise_image, (5, 5))
     plt.subplot(323)
     plt.imshow(blur_image)
     plt.title('AF_image')
     plt.axis('off')
 
-    # 中值滤波后的图片
     median_blur_image = cv.medianBlur(noise_image, 5)
     plt.subplot(324)
     plt.imshow(median_blur_image)
     plt.title('MF_image')
     plt.axis('off')
 
-    # 自适应中值滤波后的图片
     # adaptive_median_blur_image = cv.ad
 
-    # 直方图均衡化
     plt.subplot(325)
     plt.imshow(histogram_equalization(median_blur_image))
     plt.title('equalization_image')
     plt.axis('off')
 
-    # 直方图均衡化
     plt.subplot(326)
     plt.imshow(adaptive_histogram_equalization(median_blur_image))
     plt.title('adaptive_equalization_image')

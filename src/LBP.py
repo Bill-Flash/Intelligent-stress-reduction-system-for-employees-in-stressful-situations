@@ -1,10 +1,3 @@
-"""
-author: Zhou Chen
-datetime: 2019/7/1 20:24
-desc: 使用LBP的实现
-"""
-
-
 import preprocess
 import sys
 from Gabor import *
@@ -20,11 +13,11 @@ class LBP(object):
 
     def load_image(self, foler):
         """
-        根据给定的目录，读取当前目录下的所有图片
+        Read all images in the current directory based on the given directory
         :param foler:
         :return:
         """
-        categories = os.listdir(foler)  # 得到当前foler文件夹下所有的目录
+        categories = os.listdir(foler)
         imags = []
         labels = []
         for category in categories:
@@ -42,7 +35,6 @@ class LBP(object):
 
     def get_lbp(self, image):
         """
-        获取给定图片的LBP，划分成几个区域后
         :param rgb:
         :return:
         """
@@ -81,7 +73,6 @@ class LBP(object):
 
 def evaluate_lbp(data_op=1, op=1, reduction=1, rate=0.2):
     """
-    评估函数，在三个数据集上进行评估
     :param op: 1-all 2-part
     :param data_op: 1-CK 2-Fer 3-Jaffe
     :return:
@@ -156,7 +147,7 @@ def evaluate_lbp(data_op=1, op=1, reduction=1, rate=0.2):
         Classifier().SVM(train, test2)
 
 
-# 在未训练的数据集上进行测试
+# Perform testing on the untrained datase
 def evaluate1_lbp():
     filters = Gabor().build_filters()
     from tqdm import tqdm
@@ -194,7 +185,7 @@ def evaluate1_lbp():
 
 
 if __name__ == "__main__":
-    # 在本数据集上训练并评估
+    # Train and evaluate on this dataset
     # 0.9645 0.949 (784, 36865) (197, 36865) re = 6
     print("CK+:")
     evaluate_lbp(1, 3, 3)
@@ -204,6 +195,6 @@ if __name__ == "__main__":
     # 0.4186 0.697
     # print("Jaffe")
     # evaluate_lbp(3, 3, 1, 0.1)
-    # 在不同数据集上训练并评估
+    # Train and evaluate on different dataset
     # Jaffe 0.705 CK: 0.705
     # evaluate1_lbp()

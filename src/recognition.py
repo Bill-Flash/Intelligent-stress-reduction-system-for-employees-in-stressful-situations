@@ -1,8 +1,3 @@
-"""
-author: Zhou Chen
-datetime: 2019/6/19 18:49
-desc: 本模块为表情预测处理模块
-"""
 import os
 import cv2
 import numpy as np
@@ -13,8 +8,7 @@ from blazeface import blaze_detect
 
 def face_detect(img_path, model_selection="default"):
     """
-    检测测试图片的人脸
-    :param img_path: 图片的完整路径
+    :param img_path:
     :return:
     """
     img = cv2.imread(img_path)
@@ -36,12 +30,6 @@ def face_detect(img_path, model_selection="default"):
 
 
 def generate_faces(face_img, img_size=48):
-    """
-    将探测到的人脸进行增广
-    :param face_img: 灰度化的单个人脸图
-    :param img_size: 目标图片大小
-    :return:
-    """
     face_img = face_img / 255.
     face_img = cv2.resize(face_img, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
     resized_images = list()
@@ -64,7 +52,6 @@ def generate_faces(face_img, img_size=48):
 
 def predict_expression(img_path, model):
     """
-    对图中n个人脸进行表情预测
     :param img_path:
     :return:
     """
@@ -75,13 +62,11 @@ def predict_expression(img_path, model):
     img, img_gray, faces = face_detect(img_path, 'blazeface')
     if len(faces) == 0:
         return 'no', [0, 0, 0, 0, 0, 0, 0, 0]
-    # 遍历每一个脸
     emotions = []
     result_possibilitys = []
     for (x, y, w, h) in faces:
         face_img_gray = img_gray[y:y + h + 10, x:x + w + 10]
         faces_img_gray = generate_faces(face_img_gray)
-        # 预测结果线性加权
         results = model.predict(faces_img_gray)
         result_sum = np.sum(results, axis=0).reshape(-1)
         label_index = np.argmax(result_sum, axis=0)

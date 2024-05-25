@@ -17,33 +17,33 @@ class UI(object):
     def setup_ui(self, form):
         form.setObjectName("Form")
         form.resize(1200, 800)
-        # 原图无图时显示的label
+
         self.label_raw_pic = QtWidgets.QLabel(form)
         self.label_raw_pic.setGeometry(QtCore.QRect(10, 30, 320, 240))
         self.label_raw_pic.setStyleSheet("background-color:#bbbbbb;")
         self.label_raw_pic.setAlignment(QtCore.Qt.AlignCenter)
         self.label_raw_pic.setObjectName("label_raw_pic")
-        # 原图下方分割线
+
         self.line1 = QtWidgets.QFrame(form)
         self.line1.setGeometry(QtCore.QRect(340, 30, 20, 431))
         self.line1.setFrameShape(QtWidgets.QFrame.VLine)
         self.line1.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line1.setObjectName("line1")
-        # 作者说明label
+
         self.label_designer = QtWidgets.QLabel(form)
         self.label_designer.setGeometry(QtCore.QRect(20, 700, 180, 40))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_designer.setFont(font)
         self.label_designer.setObjectName("label_designer")
-        # 结果布局设置
+
         self.layout_widget = QtWidgets.QWidget(form)
         self.layout_widget.setGeometry(QtCore.QRect(10, 310, 320, 240))
         self.layout_widget.setObjectName("layoutWidget")
         self.vertical_layout = QtWidgets.QVBoxLayout(self.layout_widget)
         self.vertical_layout.setContentsMargins(0, 0, 0, 0)
         self.vertical_layout.setObjectName("verticalLayout")
-        # 右侧水平线
+
         self.line2 = QtWidgets.QFrame(self.layout_widget)
         self.line2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line2.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -94,10 +94,10 @@ class UI(object):
         self.label_rst.setText(_translate("Form", "Result"))
 
     def open_file_browser(self):
-        # 加载模型
+
         file_name, file_type = QtWidgets.QFileDialog.getOpenFileName(caption="Choose the Image", directory="./input/test/",
                                                                      filter="All Files (*);;Text Files (*.txt)")
-        # 显示原图
+
         if file_name is not None and file_name != "":
             self.show_raw_img(file_name)
             emotion, possibility = predict_expression(file_name, self.model)
@@ -111,9 +111,9 @@ class UI(object):
                                  QtGui.QImage.Format_RGB888)))
 
     def show_results(self, emotion, possibility):
-        # 显示表情名
+
         self.label_emotion.setText(QtCore.QCoreApplication.translate("Form", emotion))
-        # 显示emoji
+
         if emotion != 'no':
             img = cv2.imread('./assets/icons/' + str(emotion) + '.png')
             frame = cv2.resize(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), (100, 100))
@@ -122,7 +122,7 @@ class UI(object):
                              QtGui.QImage.Format_RGB888)))
         else:
             self.label_rst.setText(QtCore.QCoreApplication.translate("Form", "no result"))
-        # 显示直方图
+
         self.show_bars(list(possibility))
 
     def show_bars(self, possbility):
@@ -135,14 +135,13 @@ class UI(object):
 
     def get_faces_from_image(self, img_path):
         """
-        获取图片中的人脸
         :param img_path:
         :return:
         """
         img, img_gray, faces = face_detect(img_path, 'blazeface')
         if len(faces) == 0:
             return None
-        # 遍历每一个脸
+
         faces_gray = []
         for (x, y, w, h) in faces:
             face_img_gray = img_gray[y:y + h + 10, x:x + w + 10]

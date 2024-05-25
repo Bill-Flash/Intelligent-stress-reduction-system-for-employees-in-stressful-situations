@@ -1,8 +1,3 @@
-"""
-author: Zhou Chen
-datetime: 2019/6/23 12:49
-desc: 可视化训练过程
-"""
 import numpy as np
 
 

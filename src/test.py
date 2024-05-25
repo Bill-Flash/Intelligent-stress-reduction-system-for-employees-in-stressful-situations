@@ -1,17 +1,4 @@
-"""
-author: Zhou Chen
-datetime: 2019/6/23 15:59
-desc: the project
-"""
-
-
 def generate_faces(face_img, img_size=48):
-    """
-    将探测到的人脸进行增广
-    :param face_img: 灰度化的单个人脸图
-    :param img_size: 目标图片大小
-    :return:
-    """
     import cv2
     import numpy as np
     face_img = cv2.resize(face_img, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
@@ -35,7 +22,6 @@ def generate_faces(face_img, img_size=48):
 
 def predict_data_gen():
     """
-    有增广预测
     :return:
     """
     from model import CNN3
@@ -58,7 +44,7 @@ def predict_data_gen():
 
 def predict_no_gen():
     """
-    无增广预测
+    Prediction without augmentation
     :return:
     """
     from model import CNN3

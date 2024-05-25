@@ -1,20 +1,9 @@
-"""
-author: Zhou Chen
-datetime: 2019/6/18 17:06
-desc: 构建CNN模型
-"""
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Dropout, BatchNormalization, Flatten, Dense, AveragePooling2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import PReLU
 
 
 def CNN1(input_shape=(48, 48, 1), n_classes=8):
-    """
-    参考VGG思路设计的第一个模型，主要注意点是感受野不能太大，以免获得很多噪声信息
-    :param input_shape: 输入图片的尺寸
-    :param n_classes: 目标类别数目
-    :return:
-    """
     # input
     input_layer = Input(shape=input_shape)
     # block1
@@ -45,7 +34,8 @@ def CNN1(input_shape=(48, 48, 1), n_classes=8):
 
 def CNN2(input_shape=(48, 48, 1), n_classes=8):
     """
-    参考论文Going deeper with convolutions在输入层后加一层的1*1卷积增加非线性表示
+    Referencing the paper 'Going Deeper with Convolutions', add a 1x1 convolution layer after the
+    input layer to increase non-linear representation
 
     :param input_shape:
     :param n_classes:
@@ -77,7 +67,7 @@ def CNN2(input_shape=(48, 48, 1), n_classes=8):
 
 def CNN3(input_shape=(48, 48, 1), n_classes=8):
     """
-    参考论文实现
+    Reference paper:
     A Compact Deep Learning Model for Robust Facial Expression Recognition
     :param input_shape:
     :param n_classes:
