@@ -1,3 +1,4 @@
+
 import os
 import argparse
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -26,10 +27,8 @@ if opt.dataset == "fer2013":
     expressions, x_train, y_train = Fer2013().gen_train()
     _, x_valid, y_valid = Fer2013().gen_valid()
     _, x_test, y_test = Fer2013().gen_test()
-
     y_train = to_categorical(y_train).reshape(y_train.shape[0], -1)
     y_valid = to_categorical(y_valid).reshape(y_valid.shape[0], -1)
-
     y_train = np.hstack((y_train, np.zeros((y_train.shape[0], 1))))
     y_valid = np.hstack((y_valid, np.zeros((y_valid.shape[0], 1))))
     print("load fer2013 dataset successfully, it has {} train images and {} valid iamges".format(y_train.shape[0], y_valid.shape[0]))
@@ -67,10 +66,8 @@ elif opt.dataset == "jaffe":
     expressions, x, y = Jaffe().gen_train()
     y = to_categorical(y).reshape(y.shape[0], -1)
     y = np.hstack((y, np.zeros((y.shape[0], 1))))
-
     x_train, x_valid, y_train, y_valid = train_test_split(x, y, test_size=0.2, random_state=2019)
-    print("load jaffe dataset successfully, it has {} train images and {} valid iamges".format(y_train.shape[0],
-                                                                                                 y_valid.shape[0]))
+    print("load jaffe dataset successfully, it has {} train images and {} valid iamges".format(y_train.shape[0],y_valid.shape[0]))
     train_generator = ImageDataGenerator(rotation_range=5,
                                          width_shift_range=0.01,
                                          height_shift_range=0.01,
@@ -95,7 +92,6 @@ elif opt.dataset == "jaffe":
 else:
     expr, x, y = CK().gen_train()
     y = to_categorical(y).reshape(y.shape[0], -1)
-
     x_train, x_valid, y_train, y_valid = train_test_split(x, y, test_size=0.2, random_state=2019)
     print("load CK+ dataset successfully, it has {} train images and {} valid iamges".format(y_train.shape[0],
                                                                                 y_valid.shape[0]))

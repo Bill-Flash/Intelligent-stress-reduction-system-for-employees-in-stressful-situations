@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
@@ -6,7 +7,6 @@ import cv2 as cv
 
 def add_noise(input_data):
     """
-    Increase noise interference
     :param input_data:
     :return:
     """
@@ -51,10 +51,9 @@ def detection(img):
     :return:
     """
     detector = dlib.get_frontal_face_detector()
-    dets = detector(img, 1)  # Use detector for face detection, dets is the returned result
-    print("Number of faces detected: {}".format(len(dets)))  # Print the number of recognized faces
+    dets = detector(img, 1)  #
+    print("Number of faces detected: {}".format(len(dets))) 
     for index, face in enumerate(dets):
-        # Label faces in pictures and display
         left = face.left()
         top = face.top()
         right = face.right()
@@ -69,7 +68,6 @@ def predictor(img, dets):
     :param dets:
     :return:
     """
-    # shape_predictor_68_face_landmarks.dat is a model for face calibration, it is based on HOG features.
     predictor_path = "../model/shape_predictor_68_face_landmarks.dat"
     predictor = dlib.shape_predictor(predictor_path)
     shape_list = []
@@ -84,7 +82,6 @@ def predictor(img, dets):
 
 def gray_norm(img):
     """
-    灰度归一化
     :param img:
     :return:
     """
@@ -107,7 +104,6 @@ def normailiztaion(img, dets, shape_list):
     :return:
     """
     img = gray_norm(img)
-
     img_list = []
     pt_pos_list = []
     for index, face in enumerate(dets):
@@ -133,11 +129,6 @@ def deal(img):
     """
     :param img:
     :return:
-    img: The image after being cropped
-    dets: Face bounding information
-    shape: The positions of feature points in the original image
-    img_list: The cropped images
-    pt_pos_list: The positions of feature points in each image
     """
     img = cv.blur(img, (5, 5))
     dets = detection(img)
@@ -178,9 +169,6 @@ def test():
     plt.imshow(median_blur_image)
     plt.title('MF_image')
     plt.axis('off')
-
-    # adaptive_median_blur_image = cv.ad
-
     plt.subplot(325)
     plt.imshow(histogram_equalization(median_blur_image))
     plt.title('equalization_image')

@@ -6,6 +6,8 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 
 class Fer2013(object):
     def __init__(self, folder="./dataset/fer2013"):
+        """
+        """
         self.folder = folder
 
     def gen_train(self):
@@ -20,7 +22,7 @@ class Fer2013(object):
             images = os.listdir(expression_folder)
             for j in range(len(images)):
                 img = load_img(os.path.join(expression_folder, images[j]), target_size=(48, 48), color_mode="grayscale")
-                img = img_to_array(img)
+                img = img_to_array(img)  
                 x_train.append(img)
                 y_train.append(i)
         x_train = np.array(x_train).astype('float32') / 255.
@@ -28,12 +30,6 @@ class Fer2013(object):
         return expressions, x_train, y_train
 
     def gen_train_no(self):
-        """
-        generate training data
-        :return expressions: The order in which the file is read corresponds to the index of the label
-        :return x_train: Training dataset
-        :return y_train: Training labels
-        """
         folder = os.path.join(self.folder, 'Training')
         expressions = ['anger', 'disgust', 'fear', 'happy', 'sad', 'surprised', 'neutral', 'contempt']
         x_train = []
@@ -72,12 +68,6 @@ class Fer2013(object):
         return expressions, x_valid, y_valid
 
     def gen_valid_no(self):
-        """
-        generate validation data
-        :return expressions: The order in which the file is read corresponds to the index of the label
-        :return x_train: Training dataset
-        :return y_train: Training labels
-        """
         folder = os.path.join(self.folder, 'PublicTest')
         expressions = ['anger', 'disgust', 'fear', 'happy', 'sad', 'surprised', 'neutral', 'contempt']
         x_train = []
@@ -108,7 +98,7 @@ class Fer2013(object):
             images = os.listdir(expression_folder)
             for j in range(len(images)):
                 img = load_img(os.path.join(expression_folder, images[j]), target_size=(48, 48), color_mode="grayscale")
-                img = img_to_array(img)
+                img = img_to_array(img) 
                 x_test.append(img)
                 y_test.append(i)
         x_test = np.array(x_test).astype('float32') / 255.
@@ -116,12 +106,6 @@ class Fer2013(object):
         return expressions, x_test, y_test
 
     def gen_test_no(self):
-        """
-        generate validation data
-        :return expressions: The order in which the file is read corresponds to the index of the label
-        :return x_train: Training dataset
-        :return y_train: Training labels
-        """
         folder = os.path.join(self.folder, 'PrivateTest')
         expressions = ['anger', 'disgust', 'fear', 'happy', 'sad', 'surprised', 'neutral', 'contempt']
         x_train = []
@@ -157,7 +141,7 @@ class Jaffe(object):
             images = os.listdir(expression_folder)
             for j in range(len(images)):
                 img = load_img(os.path.join(expression_folder, images[j]), target_size=(48, 48), color_mode="grayscale")
-                img = img_to_array(img)  # 灰度化
+                img = img_to_array(img) 
                 x_train.append(img)
                 y_train.append(i)
         x_train = np.array(x_train).astype('float32') / 255.
@@ -214,6 +198,10 @@ class CK(object):
         return expressions, x_train, y_train
 
     def gen_train_no(self):
+        """
+        产生训练数据
+        :return:
+        """
         import cv2
         folder = self.folder
         expressions = ['anger', 'disgust', 'fear', 'happy', 'sad', 'surprised', 'neutral', 'contempt']

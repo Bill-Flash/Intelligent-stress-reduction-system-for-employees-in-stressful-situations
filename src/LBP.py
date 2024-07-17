@@ -1,3 +1,4 @@
+
 import preprocess
 import sys
 from Gabor import *
@@ -9,15 +10,13 @@ from sklearn import svm
 
 
 class LBP(object):
-    # 使用LBP+SVM实现表情识别
 
     def load_image(self, foler):
         """
-        Read all images in the current directory based on the given directory
         :param foler:
         :return:
         """
-        categories = os.listdir(foler)
+        categories = os.listdir(foler) 
         imags = []
         labels = []
         for category in categories:
@@ -147,7 +146,6 @@ def evaluate_lbp(data_op=1, op=1, reduction=1, rate=0.2):
         Classifier().SVM(train, test2)
 
 
-# Perform testing on the untrained datase
 def evaluate1_lbp():
     filters = Gabor().build_filters()
     from tqdm import tqdm
@@ -185,7 +183,6 @@ def evaluate1_lbp():
 
 
 if __name__ == "__main__":
-    # Train and evaluate on this dataset
     # 0.9645 0.949 (784, 36865) (197, 36865) re = 6
     print("CK+:")
     evaluate_lbp(1, 3, 3)
@@ -195,6 +192,5 @@ if __name__ == "__main__":
     # 0.4186 0.697
     # print("Jaffe")
     # evaluate_lbp(3, 3, 1, 0.1)
-    # Train and evaluate on different dataset
     # Jaffe 0.705 CK: 0.705
     # evaluate1_lbp()

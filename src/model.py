@@ -1,9 +1,15 @@
+
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Dropout, BatchNormalization, Flatten, Dense, AveragePooling2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import PReLU
 
 
 def CNN1(input_shape=(48, 48, 1), n_classes=8):
+    """
+    :param input_shape:
+    :param n_classes: 
+    :return:
+    """
     # input
     input_layer = Input(shape=input_shape)
     # block1
@@ -34,8 +40,6 @@ def CNN1(input_shape=(48, 48, 1), n_classes=8):
 
 def CNN2(input_shape=(48, 48, 1), n_classes=8):
     """
-    Referencing the paper 'Going Deeper with Convolutions', add a 1x1 convolution layer after the
-    input layer to increase non-linear representation
 
     :param input_shape:
     :param n_classes:
@@ -67,7 +71,6 @@ def CNN2(input_shape=(48, 48, 1), n_classes=8):
 
 def CNN3(input_shape=(48, 48, 1), n_classes=8):
     """
-    Reference paper:
     A Compact Deep Learning Model for Robust Facial Expression Recognition
     :param input_shape:
     :param n_classes:

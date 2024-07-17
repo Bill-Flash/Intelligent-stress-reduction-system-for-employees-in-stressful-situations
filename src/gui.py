@@ -8,9 +8,13 @@ from ui import UI
 
 
 def load_cnn_model():
+    """
+    载入CNN模型
+    :return:
+    """
     from model import CNN3
     model = CNN3()
-    model.load_weights('./models/cnn3_best_weights.h5')
+    model.load_weights('/Users/fangzhihao/Desktop/港大学习/sem2/project/FacialExpressionRecognition-master/models/cnn3_best_weights.h5')
     return model
 
 

@@ -210,7 +210,7 @@ class blazeFaceDetector():
 
 	def filterWithNonMaxSupression(self, boxes, keypoints, scores):
 		# Filter based on non max suppression
-		selected_indices = tf.image.non_max_suppression(boxes, scores, MAX_FACE_NUM, self.iouThreshold)
+		selected_indices = tf.image.non_max_suppression(tf.dtypes.cast(boxes, tf.float32), tf.dtypes.cast(scores, tf.float32), MAX_FACE_NUM, self.iouThreshold)
 		filtered_boxes = tf.gather(boxes, selected_indices).numpy()
 		filtered_keypoints = tf.gather(keypoints, selected_indices).numpy()
 		filtered_scores = tf.gather(scores, selected_indices).numpy()

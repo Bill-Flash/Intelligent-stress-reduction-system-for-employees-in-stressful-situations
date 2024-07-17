@@ -2,35 +2,29 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 
 def get_fer2013_images():
-    """
-    :return:
-    """
     import pandas as pd
     import numpy as np
     import scipy.misc as sm
     import os
-
+    # 定义7种表情
     emotions = {
-        '0': 'anger',
-        '1': 'disgust',
-        '2': 'fear',
-        '3': 'happy',
-        '4': 'sad',
-        '5': 'surprised',
-        '6': 'neutral',
+        '0': 'anger',  # 生气
+        '1': 'disgust',  # 厌恶
+        '2': 'fear',  # 恐惧
+        '3': 'happy',  # 开心
+        '4': 'sad',  # 伤心
+        '5': 'surprised',  # 惊讶
+        '6': 'neutral',  # 中性
     }
 
     def save_image_from_fer2013(file):
         faces_data = pd.read_csv(file)
         root = '../data/fer2013/'
-
         data_number = 0
         for index in range(len(faces_data)):
-
             emotion_data = faces_data.loc[index][0]  # emotion
             image_data = faces_data.loc[index][1]  # pixels
             usage_data = faces_data.loc[index][2]  # usage
-
             image_array = np.array(list(map(float, image_data.split()))).reshape((48, 48))
 
             folder = root + usage_data
@@ -40,19 +34,14 @@ def get_fer2013_images():
                 os.mkdir(folder)
             if not os.path.exists(image_path):
                 os.mkdir(image_path)
-
             image_file = os.path.join(image_path, str(index) + '.jpg')
             sm.toimage(image_array).save(image_file)
             data_number += 1
-        print('There are' + str(data_number) + 'pictures in total')
 
     save_image_from_fer2013('../data/fer2013/fer2013.csv')
 
 
 def get_jaffe_images():
-    """
-    :return:
-    """
     import cv2
     import os
     emotions = {
@@ -67,15 +56,10 @@ def get_jaffe_images():
     emotions_reverse = ['anger', 'disgust', 'fear', 'happy', 'sad', 'surprised', 'neutral']
 
     def detect_face(img):
-        """
-        :param img:
-        :return:
-        """
         cascade = cv2.CascadeClassifier('../data/params/haarcascade_frontalface_alt.xml')
         rects = cascade.detectMultiScale(img, scaleFactor=1.3, minNeighbors=4, minSize=(30, 30),
                                          flags=cv2.CASCADE_SCALE_IMAGE)
         if len(rects) == 0:
-
             return []
         rects[:, 2:] += rects[:, :2]
         return rects
@@ -86,21 +70,17 @@ def get_jaffe_images():
     labels = []
     index = 0
     for file in files:
-        img_path = os.path.join(folder, file)
-        img_label = emotions[str(img_path.split('.')[-3][:2])]
+        img_path = os.path.join(folder, file)  
+        img_label = emotions[str(img_path.split('.')[-3][:2])] 
         labels.append(img_label)
         img = cv2.imread(img_path, 1)
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
         rects_ = detect_face(img_gray)
         for x1, y1, x2, y2 in rects_:
             cv2.rectangle(img, (x1+10, y1+20), (x2-10, y2), (0, 255, 255), 2)
             img_roi = img_gray[y1+20: y2, x1+10: x2-10]
             img_roi = cv2.resize(img_roi, (48, 48))
             images.append(img_roi)
-
-        # icons.append(cv2.resize(img_gray, (48, 48)))
-
         index += 1
     if not os.path.exists('../data/jaffe/Training'):
         os.mkdir('../data/jaffe/Training')
@@ -120,7 +100,6 @@ def expression_analysis(distribution_possibility):
     import numpy as np
     import matplotlib.pyplot as plt
     import os
-    # 定义8种表情
     emotions = {
         '0': 'anger',
         '1': 'disgust',
@@ -193,7 +172,7 @@ def cv2_img_add_text(img, text, left, top, text_color=(0, 255, 0), text_size=20)
         img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(img)
     font_text = ImageFont.truetype(
-        "/Users/fangzhihao/Desktop/港大学习/sem2/project/FacialExpressionRecognition-master/assets/simsun.ttc", text_size, encoding="utf-8")
+        "/Users/fangzhihao/Desktop/港大学习/sem2/project/FacialExpressionRecognition-master/assets/simsun.ttc", text_size, encoding="utf-8")  
     draw.text((left, top), text, text_color, font=font_text)
     return cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
 
@@ -226,7 +205,6 @@ def get_faces_from_gray_image(img_path):
 
 def get_feature_map(model, layer_index, channels, input_img=None):
     """
-    Visualize the feature maps learned by each convolutional layer
     :param model:
     :param layer_index:
     :param channels:

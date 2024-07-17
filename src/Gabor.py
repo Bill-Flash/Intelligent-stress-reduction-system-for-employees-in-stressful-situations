@@ -40,18 +40,13 @@ class Classifier(object):
         :param test_array:
         :return:
         """
-
-        # 存储训练样本的最大值
         train_array_max = []
         train_array_min = []
 
-        # 分别记录训练样本的数量及特征量数目+1
         n = train_array.shape[0]
         m = train_array.shape[1]
 
-        # 测试样本的数目
         test_n = test_array.shape[0]
-
         train_x = train_array[:, :m - 1].reshape(n, m - 1)
         train_y = train_array[:, m - 1].reshape(n, )
         test_x = test_array[:, :m - 1].reshape(test_n, m - 1)
@@ -95,7 +90,6 @@ class Classifier(object):
 
         svc.fit(new_train, y_train)
         pred = svc.predict(new_test)
-
         recognition_rate = np.sum((pred == y_test)) / len(test_data[:, -1])
         print(recognition_rate)
 
@@ -117,6 +111,7 @@ class Classifier(object):
         mlp.fit(x_train, y_train)
         pred = mlp.predict(x_test)
 
+        # 获得识别率
         recognition_rate = np.sum((pred == y_test)) / len(test_data[:, -1])
         print(recognition_rate)
 
@@ -125,13 +120,12 @@ class Gabor(object):
 
     def build_filters(self):
         """
-        construct Gabor filter
         :return:
         """
         filters = []
-        ksize = [3, 5, 7, 9]  # gabor尺度，6个
-        lamda = np.pi / 2.0  # 波长
-        for theta in np.arange(0, np.pi, np.pi / 4):  # gabor方向，0°，45°，90°，135°，共四个
+        ksize = [3, 5, 7, 9]
+        lamda = np.pi / 2.0  
+        for theta in np.arange(0, np.pi, np.pi / 4):  
             for K in range(4):
                 kern = cv2.getGaborKernel((ksize[K], ksize[K]), 0.56 * ksize[K], theta, lamda, 0.5, 1, ktype=cv2.CV_32F)
                 kern /= 1.5 * kern.sum()
@@ -146,7 +140,7 @@ class Gabor(object):
         return accum
 
     def getGabor(self, img, filters, pic_show=False, reduction=1):
-        res = []
+        res = [] 
         for i in range(len(filters)):
             res1 = self.process(img, filters[i])
             res1 = Decomposition().mean_pooling(res1, reduction)
@@ -159,7 +153,7 @@ class Gabor(object):
                 plt.imshow(filters[temp], cmap='gray')
             plt.show()
 
-        return res
+        return res  
 
 
 def generate_train(path, result, filters, train):
@@ -173,6 +167,11 @@ def generate_train(path, result, filters, train):
 
 
 def evaluate_valid(data_op=1, op=1, reduction=1, rate=0.2):
+    """
+    :param op: 1-all 2-part
+    :param data_op: 1-CK 2-Fer 3-Jaffe
+    :return:
+    """
     import preprocess
     from tqdm import tqdm
     from data import CK, Fer2013, Jaffe
@@ -228,6 +227,9 @@ def evaluate_valid(data_op=1, op=1, reduction=1, rate=0.2):
 
 
 def evaluate_test():
+    """
+    :return:
+    """
     filters = Gabor().build_filters()
     from tqdm import tqdm
     from data import CK, Fer2013, Jaffe

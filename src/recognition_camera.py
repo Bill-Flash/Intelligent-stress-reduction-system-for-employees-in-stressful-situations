@@ -23,11 +23,16 @@ def load_model():
     :return:
     """
     model = CNN3()
-    model.load_weights('./models/cnn3_best_weights.h5')
+    model.load_weights('/Users/fangzhihao/Desktop/港大学习/sem2/project/FacialExpressionRecognition-master/models/cnn3_best_weights.h5')
     return model
 
 
 def generate_faces(face_img, img_size=48):
+    """
+    :param face_img:
+    :param img_size:
+    :return:
+    """
 
     face_img = face_img / 255.
     face_img = cv2.resize(face_img, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
@@ -51,20 +56,16 @@ def predict_expression():
     model = load_model()
 
     border_color = (0, 0, 0)
-    font_color = (255, 255, 255)
-    capture = cv2.VideoCapture(0)
+    font_color = (255, 255, 255) 
+    capture = cv2.VideoCapture(0)  
     if filename:
         capture = cv2.VideoCapture(filename)
 
     while True:
-        _, frame = capture.read()
+        _, frame = capture.read()  
         frame = cv2.cvtColor(cv2.resize(frame, (800, 600)), cv2.COLOR_BGR2RGB)
-        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # cascade = cv2.CascadeClassifier('./dataset/params/haarcascade_frontalface_alt.xml')
-
-        # faces = cascade.detectMultiScale(frame_gray, scaleFactor=1.1, minNeighbors=1, minSize=(120, 120))
+        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
         faces = blaze_detect(frame)
-
         if faces is not None and len(faces) > 0:
             for (x, y, w, h) in faces:
                 face = frame_gray[y: y + h, x: x + w]
@@ -75,17 +76,14 @@ def predict_expression():
                 emotion = index2emotion(label_index)
                 cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), border_color, thickness=2)
                 frame = cv2_img_add_text(frame, emotion, x+30, y+30, font_color, 20)
-
                 # cv2.putText(frame, emotion, (x + 30, y + 30), cv2.FONT_HERSHEY_SIMPLEX, 1, font_color, 4)
-        cv2.imshow("expression recognition(press esc to exit)", cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+        cv2.imshow("expression recognition(press esc to exit)", cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))  
 
-        key = cv2.waitKey(30)
-
-
+        key = cv2.waitKey(30) 
         if key == 27:
             break
-    capture.release()
-    cv2.destroyAllWindows()
+    capture.release() 
+    cv2.destroyAllWindows()  
 
 
 if __name__ == '__main__':

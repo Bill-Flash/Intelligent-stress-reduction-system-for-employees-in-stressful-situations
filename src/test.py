@@ -1,4 +1,10 @@
+
 def generate_faces(face_img, img_size=48):
+    """
+    :param face_img: 
+    :param img_size: 
+    :return:
+    """
     import cv2
     import numpy as np
     face_img = cv2.resize(face_img, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
@@ -44,7 +50,6 @@ def predict_data_gen():
 
 def predict_no_gen():
     """
-    Prediction without augmentation
     :return:
     """
     from model import CNN3

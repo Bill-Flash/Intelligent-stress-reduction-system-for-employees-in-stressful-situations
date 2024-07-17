@@ -1,3 +1,4 @@
+
 import numpy as np
 
 
@@ -32,10 +33,8 @@ def plot_data(f, f_grad):
     plt.figure(figsize=(16, 8))
     plt.subplot(1, 2, 1)
     ax = plt.gca()
-    # remove borders
     ax.spines['top'].set_color('none')
     ax.spines['right'].set_color('none')
-
     ax.xaxis.set_ticks_position('bottom')
     ax.spines['bottom'].set_position(('data', 0))
     ax.yaxis.set_ticks_position('left')
@@ -47,10 +46,8 @@ def plot_data(f, f_grad):
 
     plt.subplot(1, 2, 2)
     ax = plt.gca()
-    # remove borders
     ax.spines['top'].set_color('none')
     ax.spines['right'].set_color('none')
-
     ax.xaxis.set_ticks_position('bottom')
     ax.spines['bottom'].set_position(('data', 0))
     ax.yaxis.set_ticks_position('left')

@@ -1,14 +1,15 @@
+
 import os
 import cv2
 import numpy as np
 from utils import index2emotion, expression_analysis, cv2_img_add_text
 from blazeface import blaze_detect
-
+import dlib
 
 
 def face_detect(img_path, model_selection="default"):
     """
-    :param img_path:
+    :param img_path: 
     :return:
     """
     img = cv2.imread(img_path)
@@ -23,6 +24,16 @@ def face_detect(img_path, model_selection="default"):
         )
     elif model_selection == "blazeface":
         faces = blaze_detect(img)
+    elif model_selection == "dlib":
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        detector = dlib.get_frontal_face_detector()
+        faces = detector(img)
+        new_faces = []
+        for face in faces:
+            new_faces.append([face.left(), face.top(), face.right()-face.left(), face.bottom()-face.top()])
+        faces = new_faces
+        
+
     else:
         raise NotImplementedError("this face detector is not supported now!!!")
 
@@ -30,6 +41,11 @@ def face_detect(img_path, model_selection="default"):
 
 
 def generate_faces(face_img, img_size=48):
+    """
+    :param face_img: 
+    :param img_size:
+    :return:
+    """
     face_img = face_img / 255.
     face_img = cv2.resize(face_img, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
     resized_images = list()
@@ -56,10 +72,10 @@ def predict_expression(img_path, model):
     :return:
     """
 
-    border_color = (0, 0, 0)  # 黑框框
-    font_color = (255, 255, 255)  # 白字字
+    border_color = (0, 0, 0)  
+    font_color = (255, 255, 255)  
 
-    img, img_gray, faces = face_detect(img_path, 'blazeface')
+    img, img_gray, faces = face_detect(img_path, model_selection="dlib")
     if len(faces) == 0:
         return 'no', [0, 0, 0, 0, 0, 0, 0, 0]
     emotions = []
