@@ -6,23 +6,14 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score
 
 # 加载实际训练数据和标签
-train_data = np.load('train_data.npy')  # 替换为实际的文件路径
-train_labels = np.load('train_labels.npy')  # 替换为实际的文件路径
-
-"""
-train,test 8维数据格式
-[
- [1, 2, 3, 4, 5, 6, 7, 8],
- [1, 2, 3, 4, 5, 6, 7, 8],
- ...
-]
-train,test的label 格式
-[1, 2, 3, 4, 5, ...]
-"""
+train_data = np.load('src/Regression/train_data.npy')  # 替换为实际的文件路径
+train_labels = np.load('src/Regression/train_labels.npy')  # 替换为实际的文件路径
 
 
-print("Example train_data shape:", train_data.shape)
-print("Example train_labels shape:", train_labels.shape)
+
+
+# print("Example train_data shape:", train_data.shape)
+# print("Example train_labels shape:", train_labels.shape)
 
 # Convert to Tensor type
 train_tensors = torch.tensor(train_data, dtype=torch.float32)
@@ -72,26 +63,25 @@ def train_model(model, dataloader, criterion, optimizer, num_epochs=10):
 
     print(f'Final MSE: {mse:.4f}, R2: {r2:.4f}')
 
+if __name__ == "__main__":
+    # Dim is 8 features
+    input_dim = 8
 
-# Dim is 8 features
-input_dim = 8
+    # DataLoader
+    batch_size = 32
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-# DataLoader
-batch_size = 32
-train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    # Initialize the model, loss function, and optimizer
+    model = StressPredictor(input_dim=input_dim)
+    criterion = nn.MSELoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# Initialize the model, loss function, and optimizer
-model = StressPredictor(input_dim=input_dim)
-criterion = nn.MSELoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+    # Training model
+    num_epochs = 1000
+    train_model(model, train_dataloader, criterion, optimizer, num_epochs)
 
-# Training model
-num_epochs = 1000
-train_model(model, train_dataloader, criterion, optimizer, num_epochs)
-
-# Save model
-model_path = 'stress_predictor_model.pth'
-torch.save(model.state_dict(), model_path)
-print(f'Model saved to {model_path}')
-
+    # Save model
+    model_path = 'stress_predictor_model.pth'
+    torch.save(model.state_dict(), model_path)
+    print(f'Model saved to {model_path}')
 
